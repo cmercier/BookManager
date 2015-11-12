@@ -14,7 +14,7 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        manager = new SimpleBookManager();
+        manager = SimpleBookManager.getInstance();
         Log.d("bookmanager", "Works");
 
         setContentView(R.layout.activity_test);

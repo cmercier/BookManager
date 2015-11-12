@@ -7,6 +7,12 @@ import java.util.ArrayList;
  */
 public class SimpleBookManager implements BookManager {
 
+    // Singleton
+    private static SimpleBookManager ourInstance = new SimpleBookManager();
+    public static SimpleBookManager getInstance() {
+        return ourInstance;
+    }
+
     // Attributs
 
     private ArrayList<Book> books;
@@ -14,13 +20,8 @@ public class SimpleBookManager implements BookManager {
     // Constructors
 
 
-    public SimpleBookManager() {
+    private SimpleBookManager() {
         books = new ArrayList<Book>();
-        books.add(new Book("Henry", "Test", "1548795623", 15, "TIN093"));
-        books.add(new Book("Henry2", "Test2", "15484795623", 20, "TIN093"));
-        books.add(new Book("Henry3", "Test3", "154487495623", 25, "TIN093"));
-        books.add(new Book("Henry4", "Test4", "154879544623", 30, "TIN093"));
-        books.add(new Book("Henry5", "Test5", "15484795623", 35, "TIN093"));
     }
 
     @Override
@@ -39,6 +40,16 @@ public class SimpleBookManager implements BookManager {
         books.add(book);
         return book;
     }
+
+    public Book addBook(Book b) {
+        books.add(b);
+        return b;
+    }
+
+    public void clear() {
+        books.clear();
+    }
+
 
     @Override
     public ArrayList<Book> getAllBooks() {

@@ -21,7 +21,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        manager = new SimpleBookManager();
+        manager = SimpleBookManager.getInstance();
         Book book = manager.getBook(0);
 
         title = (TextView)findViewById(R.id.textViewNameTitle);
