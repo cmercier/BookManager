@@ -1,0 +1,7 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="bookmanager.chalmers.edu.bookmanager.MainActivity">
+    <item android:id="@+id/action_add_book" android:title="@string/add_book"
+        android:orderInCategory="100" app:showAsAction="always" android:icon="@drawable/add" />
+</menu>
