@@ -157,19 +157,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                 b.setIsbn(data.getStringExtra("isbn"));
                 SimpleBookManager.getInstance().addBook(b);
 
-                ((SummaryFragment) mSectionsPagerAdapter.getItem(0)).updateView();
-                ((SummaryFragment)mSectionsPagerAdapter.getItem(1)).updateView();
-
-                Context context = this;
-                SharedPreferences sharedPref = context.getSharedPreferences(
-                        getString(R.string.save_key), Context.MODE_PRIVATE);
-
-                Gson gson = new Gson();
-                String serialize = gson.toJson(SimpleBookManager.getInstance().getAllBooks());
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("books", serialize);
-                editor.commit();
-
+                manager.saveChanges(this);
             }
         }
     }
@@ -206,13 +194,13 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
             // getItem is called to instantiate the fragment for the given page.
             if (position == 0){
                 if (fragments[position] == null){
-                    fragments[position] = new SummaryFragment(); //CollectionFragment();
+                    fragments[position] = CollectionFragment.newInstance();
                 }
                 return fragments[position];
             }
             else{
                 if (fragments[position] == null){
-                    fragments[position] = new SummaryFragment(); //CollectionFragment();
+                    fragments[position] = SummaryFragment.newInstance();
                 }
                 return fragments[position];
             }

@@ -26,9 +26,24 @@ public class SummaryFragment extends Fragment {
         minCost = (TextView)rootView.findViewById(R.id.textViewNamePrice);
         averageCost = (TextView)rootView.findViewById(R.id.textViewNameISBN);
 
-        updateView();
+        //updateView();
 
         return rootView;
+    }
+
+    @Override
+    public void onResume(){
+        updateView();
+        super.onResume();
+    }
+
+    public static SummaryFragment newInstance() {
+        // renvoie une instance de mon fragment
+        SummaryFragment fragment = new SummaryFragment();
+        /**Bundle args = new Bundle();
+        args.putInt("KEY", 0);
+        fragment.setArguments(args);*/
+        return fragment;
     }
 
     public void updateView(){

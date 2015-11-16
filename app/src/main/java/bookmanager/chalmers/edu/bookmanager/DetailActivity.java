@@ -1,5 +1,6 @@
 package bookmanager.chalmers.edu.bookmanager;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,7 +15,12 @@ public class DetailActivity extends AppCompatActivity {
     private TextView price;
     private TextView isbn;
 
+    final int REQUEST_CODE_EDIT = 10;
+
     private SimpleBookManager manager;
+
+    int position;
+    Book book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +28,8 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         manager = SimpleBookManager.getInstance();
-        Book book = manager.getBook(0);
+        position = getIntent().getIntExtra("position", 0);
+        book = manager.getBook(position);
 
         title = (TextView)findViewById(R.id.textViewNameTitle);
         author = (TextView)findViewById(R.id.textViewNameAuthor);
@@ -52,10 +59,28 @@ public class DetailActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_edit) {
+            Intent intent = new Intent(this, EditActivity.class);
+            intent.putExtra("position", position);
+            startActivityForResult(intent, REQUEST_CODE_EDIT);
+        }
+        else if (id == R.id.action_delete) {
+            SimpleBookManager.getInstance().removeBook(book);
+            SimpleBookManager.getInstance().saveChanges(this);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == REQUEST_CODE_EDIT) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                finish();
+            }
+        }
     }
 }

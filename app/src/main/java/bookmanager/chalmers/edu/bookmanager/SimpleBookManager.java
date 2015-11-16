@@ -1,5 +1,10 @@
 package bookmanager.chalmers.edu.bookmanager;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 /**
@@ -108,7 +113,14 @@ public class SimpleBookManager implements BookManager {
     }
 
     @Override
-    public void saveChanges() {
+    public void saveChanges(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                context.getString(R.string.save_key), Context.MODE_PRIVATE);
 
+        Gson gson = new Gson();
+        String serialize = gson.toJson(getAllBooks());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("books", serialize);
+        editor.commit();
     }
 }

@@ -16,6 +16,10 @@
             android:label="@string/title_activity_create_book" >
         </activity>
         <activity
+            android:name=".EditActivity"
+            android:label="@string/title_activity_edit" >
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
