@@ -2,8 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="bookmanager.chalmers.edu.bookmanager.DetailActivity">
-    <item android:id="@+id/action_edit" android:title="@string/action_edit" android:icon="@drawable/save"
+    <item android:id="@+id/action_edit" android:title="@string/action_edit" android:icon="@drawable/edit"
         android:orderInCategory="80" app:showAsAction="ifRoom" />
-    <item android:id="@+id/action_delete" android:title="@string/action_delete" android:icon="@drawable/add"
+    <item android:id="@+id/action_delete" android:title="@string/action_delete" android:icon="@drawable/delete"
         android:orderInCategory="100" app:showAsAction="ifRoom" />
 </menu>

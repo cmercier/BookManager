@@ -1,6 +1,5 @@
 package bookmanager.chalmers.edu.bookmanager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -17,8 +16,6 @@ public class EditActivity extends AppCompatActivity {
     private TextView isbn;
 
     Book currentBook;
-
-    private SimpleBookManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

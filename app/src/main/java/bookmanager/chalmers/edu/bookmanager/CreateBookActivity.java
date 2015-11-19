@@ -16,8 +16,6 @@ public class CreateBookActivity extends AppCompatActivity {
     private TextView price;
     private TextView isbn;
 
-    private SimpleBookManager manager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,13 +48,19 @@ public class CreateBookActivity extends AppCompatActivity {
             if (title.getText().toString().isEmpty())
                 title.setError("This field can't be empty.");
             else {
-                Intent data = new Intent();
-                data.putExtra("title", title.getText().toString());
-                data.putExtra("author", author.getText().toString());
-                data.putExtra("course", course.getText().toString());
-                data.putExtra("price", price.getText().toString());
-                data.putExtra("isbn", isbn.getText().toString());
-                setResult(RESULT_OK, data);
+                // Adding of the book
+                SimpleBookManager manager = SimpleBookManager.getInstance();
+
+                Book b = new Book();
+                b.setTitle(title.getText().toString());
+                b.setAuthor(author.getText().toString());
+                b.setCourse(course.getText().toString());
+                b.setPrice(Integer.valueOf(price.getText().toString()));
+                b.setIsbn(isbn.getText().toString());
+                manager.addBook(b);
+
+                manager.saveChanges(this);
+
                 finish();
             }
         }

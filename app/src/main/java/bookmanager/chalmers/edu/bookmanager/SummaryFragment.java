@@ -1,7 +1,7 @@
 package bookmanager.chalmers.edu.bookmanager;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,21 +26,15 @@ public class SummaryFragment extends Fragment {
         minCost = (TextView)rootView.findViewById(R.id.textViewNamePrice);
         averageCost = (TextView)rootView.findViewById(R.id.textViewNameISBN);
 
-        //updateView();
+        updateView();
 
         return rootView;
     }
 
-    @Override
-    public void onResume(){
-        updateView();
-        super.onResume();
-    }
-
     public static SummaryFragment newInstance() {
-        // renvoie une instance de mon fragment
+        // return an instance of the fragment
         SummaryFragment fragment = new SummaryFragment();
-        /**Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         args.putInt("KEY", 0);
         fragment.setArguments(args);*/
         return fragment;

@@ -1,8 +1,6 @@
 package bookmanager.chalmers.edu.bookmanager;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,6 +17,7 @@ public class CollectionFragment extends Fragment {
     ArrayAdapter<Book> listAdapter;
 
     public static CollectionFragment newInstance() {
+        // return an instance of the fragment
         CollectionFragment fragment = new CollectionFragment();
         /*Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -57,14 +56,7 @@ public class CollectionFragment extends Fragment {
             }
         });
 
-
         return rootView;
-    }
-
-    @Override
-    public void onResume(){
-        updateView();
-        super.onResume();
     }
 
     public void updateView() {

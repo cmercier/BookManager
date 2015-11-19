@@ -1,7 +1,9 @@
 package bookmanager.chalmers.edu.bookmanager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.gson.Gson;
 
@@ -122,5 +124,8 @@ public class SimpleBookManager implements BookManager {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("books", serialize);
         editor.commit();
+
+        // refresh of the fragments
+        LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent("refresh"));
     }
 }

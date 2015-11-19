@@ -1,31 +1,28 @@
 package bookmanager.chalmers.edu.bookmanager;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
@@ -37,14 +34,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    final int REQUEST_CODE_CREATE_BOOK = 5;
     SectionsPagerAdapter mSectionsPagerAdapter;
-
-    public SimpleBookManager getManager() {
-        return manager;
-    }
-
-    private SimpleBookManager manager;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -56,7 +46,10 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        manager = SimpleBookManager.getInstance();
+        SimpleBookManager manager = SimpleBookManager.getInstance();
+
+        //Receiver for local broadcast to update fragments
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("refresh"));
 
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.save_key), MODE_PRIVATE);
         String deserialize = sharedPref.getString("books", "");
@@ -77,8 +70,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                 SimpleBookManager.getInstance().addBook(b);
             }
         }
-
-
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -115,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -132,34 +122,13 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_book) {
-            int requestCode = REQUEST_CODE_CREATE_BOOK;
             Intent intent = new Intent(this, CreateBookActivity.class);
-            startActivityForResult(intent, requestCode);
+            startActivity(intent);
 
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == REQUEST_CODE_CREATE_BOOK) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-
-                Book b = new Book();
-                b.setTitle(data.getStringExtra("title"));
-                b.setAuthor(data.getStringExtra("author"));
-                b.setCourse(data.getStringExtra("course"));
-                b.setPrice(Integer.valueOf(data.getStringExtra("price")));
-                b.setIsbn(data.getStringExtra("isbn"));
-                SimpleBookManager.getInstance().addBook(b);
-
-                manager.saveChanges(this);
-            }
-        }
     }
 
     @Override
@@ -223,6 +192,21 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
             }
             return null;
         }
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ((CollectionFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + mViewPager.getId() + ":" + 0)).updateView();
+            ((SummaryFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + mViewPager.getId() + ":" + 1)).updateView();
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        // Unregister since the activity is about to be closed.
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
     }
 
     /**
