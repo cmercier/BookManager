@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     @Override
     public void onDestroy() {
         // Unregister since the activity is about to be closed.
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        unregisterReceiver(mMessageReceiver);
         super.onDestroy();
     }
 

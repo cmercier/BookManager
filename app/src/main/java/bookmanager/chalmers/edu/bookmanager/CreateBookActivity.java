@@ -26,6 +26,8 @@ public class CreateBookActivity extends AppCompatActivity {
         course = (EditText)findViewById(R.id.textViewNameCourse);
         price = (EditText)findViewById(R.id.textViewNamePrice);
         isbn = (EditText)findViewById(R.id.textViewNameISBN);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -44,9 +46,10 @@ public class CreateBookActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save) {
-
             if (title.getText().toString().isEmpty())
                 title.setError("This field can't be empty.");
+            else if (!price.getText().toString().matches("^\\d+$"))
+                price.setError("It must be an integer.");
             else {
                 // Adding of the book
                 SimpleBookManager manager = SimpleBookManager.getInstance();
@@ -62,7 +65,12 @@ public class CreateBookActivity extends AppCompatActivity {
                 manager.saveChanges(this);
 
                 finish();
+                return true;
             }
+        }
+        else if (id == android.R.id.home){
+            onBackPressed();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

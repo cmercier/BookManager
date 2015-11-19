@@ -15,17 +15,19 @@ public class DetailActivity extends AppCompatActivity {
     private TextView price;
     private TextView isbn;
 
-    final int REQUEST_CODE_EDIT = 10;
-
     private SimpleBookManager manager;
 
     int position;
     Book book;
 
+    final int REQUEST_CODE_EDIT = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         manager = SimpleBookManager.getInstance();
         position = getIntent().getIntExtra("position", 0);
@@ -63,12 +65,17 @@ public class DetailActivity extends AppCompatActivity {
             Intent intent = new Intent(this, EditActivity.class);
             intent.putExtra("position", position);
             startActivityForResult(intent, REQUEST_CODE_EDIT);
-            finish();
+            return true;
         }
         else if (id == R.id.action_delete) {
             SimpleBookManager.getInstance().removeBook(book);
             SimpleBookManager.getInstance().saveChanges(this);
             finish();
+            return true;
+        }
+        else if (id == android.R.id.home){
+            onBackPressed();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -81,7 +88,7 @@ public class DetailActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_EDIT) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                ;
+                finish();
             }
         }
     }

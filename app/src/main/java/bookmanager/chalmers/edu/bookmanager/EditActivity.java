@@ -22,6 +22,8 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_book);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         int position = getIntent().getIntExtra("position", 0);
         currentBook = SimpleBookManager.getInstance().getBook(position);
 
@@ -56,6 +58,8 @@ public class EditActivity extends AppCompatActivity {
 
             if (title.getText().toString().isEmpty())
                 title.setError("This field can't be empty.");
+            else if (!price.getText().toString().matches("^\\d+$"))
+                price.setError("It must be an integer.");
             else {
                 currentBook.setTitle(title.getText().toString());
                 currentBook.setAuthor(author.getText().toString());
@@ -65,7 +69,12 @@ public class EditActivity extends AppCompatActivity {
                 SimpleBookManager.getInstance().saveChanges(this);
                 setResult(RESULT_OK);
                 finish();
+                return true;
             }
+        }
+        else if (id == android.R.id.home){
+            onBackPressed();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
